@@ -26,6 +26,18 @@ class Task(Node):
         else:
             self.end = TimeSpan()
 
+    def calculateForward(self):
+        self.calculateEarliestEnd()
+        for child in self._children:
+            child.calculateForward()
+
+    def setEarliestStartFromParent(self):
+        startEarliest = self.start.earliest
+        for parent in self._parents:
+            if parent.start.earliest < startEarliest:
+                startEarliest = parent.start.earliest
+        self.start.earliest = startEarliest
+
     def calculateEarliestEnd(self):
         self.end.earliest = self.start.earliest + self.duration
 
