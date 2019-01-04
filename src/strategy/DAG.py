@@ -17,14 +17,14 @@ class Node:
 
     registry = property(_getRegistry, None)
 
-    def __init__(self, *, parents: List['Node'] = [], children: List['Node'] = []):
-        self._parents = set(parents)
-        self._children = set(children)
+    def __init__(self, *, parents: List['Node'] = None, children: List['Node'] = None):
+        self._parents = set(parents) if parents is not None else set([])
+        self._children = set(children) if children is not None else set([])
         self._uuid = uuid.uuid4()
         self.registry.add(self)
 
     def __del__(self):
-        self._registry.remove(self)
+        self.registry.remove(self)
 
     def __hash__(self):
         return self._uuid.int
@@ -45,15 +45,21 @@ class Node:
 
     def isARoot(self):
         return len(self._parents) is 0
+    
+    def hasParents(self):
+        return len(self._parents) > 0
 
-    def isALeave(self):
+    def isALeaf(self):
         return len(self._children) is 0
+    
+    def hasChildren(self):
+        return len(self._children) > 0
 
     def getRootNodes(self):
         return [node for node in self.registry if node.isARoot()]
 
-    def getLeaveNodes(self):
-        return [node for node in self.registry if node.isALeave()]
+    def getLeafNodes(self):
+        return [node for node in self.registry if node.isALeaf()]
 
     def getRoots(self):
         def searchFunc(parent):
