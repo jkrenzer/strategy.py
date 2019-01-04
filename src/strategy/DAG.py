@@ -45,13 +45,13 @@ class Node:
 
     def isARoot(self):
         return len(self._parents) is 0
-    
+
     def hasParents(self):
         return len(self._parents) > 0
 
     def isALeaf(self):
         return len(self._children) is 0
-    
+
     def hasChildren(self):
         return len(self._children) > 0
 
@@ -60,6 +60,9 @@ class Node:
 
     def getLeafNodes(self):
         return [node for node in self.registry if node.isALeaf()]
+
+    def getAll(self):
+        return [node for node in self.registry]
 
     def getRoots(self):
         def searchFunc(parent):
