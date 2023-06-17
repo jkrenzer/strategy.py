@@ -2,14 +2,14 @@ from typing import Set, List
 from functools import partial
 import uuid
 
-class _NoFilter:
 
+class _NoFilter:
     def __eq__(self, other):
         if isinstance(_NoFilter, other):
             return True
 
-class Node:
 
+class Node:
     __registry = set([])
 
     def _getRegistry(self):
@@ -17,7 +17,7 @@ class Node:
 
     registry = property(_getRegistry, None)
 
-    def __init__(self, *, parents: List['Node'] = None, children: List['Node'] = None):
+    def __init__(self, *, parents: List["Node"] = None, children: List["Node"] = None):
         self._parents = set(parents) if parents is not None else set([])
         self._children = set(children) if children is not None else set([])
         self._uuid = uuid.uuid4()
@@ -32,11 +32,11 @@ class Node:
     def __eq__(self, other):
         return self._uuid == other._uuid
 
-    def addChild(self, child: 'Node'):
+    def addChild(self, child: "Node"):
         self._children.add(child)
         child._parents.add(self)
 
-    def removeChild(self, child: 'Node'):
+    def removeChild(self, child: "Node"):
         self._children.remove(child)
         child._parents.remove(self)
 
@@ -63,14 +63,14 @@ class Node:
 
     def getAll(self):
         return self.registry.copy()
-    
+
     def getAncestors(self):
         ancestors = set()
         for parent in self._parents:
             ancestors.add(parent)
             ancestors += parent.getAncestors()
         return ancestors
-    
+
     def getOffspring(self):
         offspring = set()
         for child in self._children:
@@ -81,20 +81,22 @@ class Node:
     def getRoots(self):
         def searchFunc(parent):
             return parent.isARoot()
+
         roots = self.applyOnParents(searchFunc, filter=False)
-        return set([ obj for obj, val in roots.items()])
+        return set([obj for obj, val in roots.items()])
 
     def getLeaves(self):
         def searchFunc(child):
             return child.isALeave()
+
         leaves = self.applyOnChildren(searchFunc, filter=False)
-        return set([ obj for obj, val in leaves.items()])
-    
+        return set([obj for obj, val in leaves.items()])
+
     def getRelatives(self):
         return self.getAncestors + self.getOffspring
-    
+
     def getInbetweens(self, node1, node2):
-        return node1.getRelatives() & node2.getRelatives        
+        return node1.getRelatives() & node2.getRelatives
 
     def applyOnChildren(self, func, *, recursive=True, filter=_NoFilter()):
         results = {}
@@ -103,7 +105,7 @@ class Node:
             if recursive:
                 results.update(child.applyOnChildren(func))
         if filter is not _NoFilter():
-            results = {k:v for k,v in results.items() if v is not filter}
+            results = {k: v for k, v in results.items() if v is not filter}
         return results
 
     def applyOnParents(self, func, *, recursive=True, filter=_NoFilter()):
@@ -113,5 +115,5 @@ class Node:
             if recursive:
                 results.update(parent.applyOnParents(func))
         if filter is not _NoFilter():
-            results = {k:v for k,v in results.items() if v is not filter}
+            results = {k: v for k, v in results.items() if v is not filter}
         return results

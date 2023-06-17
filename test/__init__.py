@@ -2,7 +2,8 @@ from unittest import TestSuite
 
 from . import task
 
-test_cases = task.test_cases 
+test_cases = task.test_cases
+
 
 def load_tests(loader, tests, pattern):
     suite = TestSuite()
