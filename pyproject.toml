@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "strategy"
+version = "0.0.1-alpha1"
+description = "Project management using Markdown and YAML so everything can happily live in GIT and be used in CI scripts"
+authors = ["Jörn Krenzer"]
+license = "GPL-3"
+readme = "README.md"
+packages = [{include = "strategy", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+configargparse = "^1.5.3"
+pycotap = "^1.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
