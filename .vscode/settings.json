@@ -1,0 +1,13 @@
+{
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "test"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+    "python.globalModuleInstallation": true,
+    "python.terminal.activateEnvironment": false
+}
